@@ -1,0 +1,113 @@
+[33mcommit 832cbdb25c00071c7b5e4e207361a9fcef77559d[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: Renan Lucas <renanluquinhas53@gmail.com>
+Date:   Thu May 7 22:55:16 2020 -0300
+
+    Página de início
+
+[33mcommit 7cb7ef1bca864b8eae097a999d32cc3b6fe007d8[m
+Author: Renan Lucas <renanluquinhas53@gmail.com>
+Date:   Thu May 7 22:24:33 2020 -0300
+
+    Componente Button
+
+[33mcommit e3d99be2b6fb54cd8d6bedaf88c1191a22ca5b3b[m
+Author: mtsbn <matheus.nascimento@seuvale.com>
+Date:   Thu May 7 21:00:36 2020 -0300
+
+    Padronização usando styled components
+
+[33mcommit ac41b6065d6528718e9c53b8c2cfdf098b58370e[m
+Author: Renan Lucas <renanluquinhas53@gmail.com>
+Date:   Thu May 7 20:47:56 2020 -0300
+
+    Componente renomeado para SearchBar
+
+[33mcommit 1fbdf4cc36ef50eefd2f22a50cdc870b2c61ae85[m
+Author: Renan Lucas <renanluquinhas53@gmail.com>
+Date:   Thu May 7 20:31:38 2020 -0300
+
+    Input form completo
+
+[33mcommit 3edeae4c00603887ef5b22830f13cdb4a3d027d6[m
+Author: Renan Lucas <renanluquinhas53@gmail.com>
+Date:   Thu May 7 19:03:56 2020 -0300
+
+    Input component
+
+[33mcommit 01c2188dac14bee1a7a59ab2a227bed8d1430f24[m
+Author: Renan Lucas <renanluquinhas53@gmail.com>
+Date:   Thu May 7 16:38:50 2020 -0300
+
+    Eslint e prettier config
+
+[33mcommit 595e84a68c3a31b71afbff865dde2173f86c781c[m
+Author: Matheus Barbosa <matheus.nascimento@seuvale.com>
+Date:   Thu May 7 01:14:54 2020 -0300
+
+    Update README.md
+
+[33mcommit de476ec3ad637a017f4d27173fbfda84fc308833[m
+Author: mtsbn <matheus.nascimento@seuvale.com>
+Date:   Thu May 7 00:43:09 2020 -0300
+
+    capturas de tela
+
+[33mcommit de0dbe75944c7f7c66c8b45002a825c8f5ffb404[m
+Author: mtsbn <matheus.nascimento@seuvale.com>
+Date:   Thu May 7 00:35:56 2020 -0300
+
+    prototipo xd
+
+[33mcommit 3d4146b94700416a4694fd46a62d4771d2c6385a[m
+Author: mtsbn <matheus.nascimento@seuvale.com>
+Date:   Thu May 7 00:32:48 2020 -0300
+
+    BottomNavigator Component
+
+[33mcommit 53ebe9903c5a911c288e5216dbf10d3b4da1345c[m
+Author: mtsbn <matheus.nascimento@seuvale.com>
+Date:   Wed May 6 23:33:14 2020 -0300
+
+    Transformação do mapa em componente prórprio
+
+[33mcommit 308c8a4dd6f85ef9bfd3c702cfa440783d088d73[m
+Author: mtsbn <matheus.nascimento@seuvale.com>
+Date:   Wed May 6 22:49:52 2020 -0300
+
+    Adição do mapa na página inicial
+
+[33mcommit 7f2bb7392cf14950222d26bb382873096c2ef703[m
+Author: mtsbn <matheus.nascimento@seuvale.com>
+Date:   Wed May 6 22:49:30 2020 -0300
+
+    Arquivos de estilo padrão
+
+[33mcommit 5d26d9d293da56c922da5036dfd3b0544d1782b6[m
+Author: mtsbn <matheus.nascimento@seuvale.com>
+Date:   Wed May 6 22:03:04 2020 -0300
+
+    Navegação configurada
+
+[33mcommit f2f511bab3c6d0d25ed32f1acfa4417a27f9fab8[m
+Author: mtsbn <matheus.nascimento@seuvale.com>
+Date:   Wed May 6 21:40:43 2020 -0300
+
+    Configuração do react-native-maps
+
+[33mcommit a4d49ef3218060d30ae35303d4adc29dd1b52d14[m
+Author: mtsbn <matheus.nascimento@seuvale.com>
+Date:   Wed May 6 21:40:05 2020 -0300
+
+    Instalação das principais bibliotecas
+
+[33mcommit 183ffbac7e1df3c20e2e9a1b70d900afe4b770d7[m
+Author: mtsbn <matheus.nascimento@seuvale.com>
+Date:   Wed May 6 21:18:55 2020 -0300
+
+    Inicialização do projeto react native
+
+[33mcommit 58bbd56cf2f4888094bcead988e1128de2a03590[m
+Author: Matheus Barbosa <matheus_n.b@outlook.com>
+Date:   Wed May 6 20:45:23 2020 -0300
+
+    Initial commit
