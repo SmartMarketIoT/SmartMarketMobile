@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { View } from 'react-native';
 import {
@@ -11,7 +11,22 @@ import {
     BackButton,
 } from '../../Components';
 
-export default function Password({ navigation }) {
+export default function Password({ navigation, route }) {
+
+    const [ pwd, setPwd ] = useState(null)
+    const [ pwdError, setPwdError ] = useState(null)
+
+    function onNext() {
+        if (pwd.length < 8) {
+            setPwdError("A senha precisa ter pelo menos 8 caracteres")
+        } else {
+            navigation.navigate('PasswordConfirm', {
+                ...route.params,
+                pwd
+            })
+        }
+    }
+
     return (
         <Container>
             <ContentContainer>
@@ -23,14 +38,12 @@ export default function Password({ navigation }) {
                 <PageTitle text="Senha" />
                 <View>
                     <InputLabel text="Escolha uma senha para usar o app" />
-                    <TextInput/>
+                    <TextInput secureTextEntry value={pwd} onChangeText={setPwd} error={pwdError}/>
                 </View>
 
                 <Button
                     title="Próximo"
-                    onButtonPress={() => {
-                        navigation.navigate('PasswordConfirm');
-                    }}
+                    onButtonPress={onNext}
                 />
             </ContentContainer>
         </Container>

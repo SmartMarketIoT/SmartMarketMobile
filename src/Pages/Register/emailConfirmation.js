@@ -11,7 +11,7 @@ import {
     BackButton,
 } from '../../Components';
 
-export default function EmailConfirmation({ navigation }) {
+export default function EmailConfirmation({ route, navigation }) {
     return (
         <Container>
             <ContentContainer>
@@ -23,21 +23,16 @@ export default function EmailConfirmation({ navigation }) {
                 <PageTitle text="Confirmação do e-mail" />
                 <View>
                     <InputLabel text="O seu e-mail está correto?" />
-                    <InputLabel text="teste@teste.com" />
+                    <InputLabel text={route.params.email} />
                 </View>
 
                 <View>
                     <Button
-                        outline
-                        title="Quero corrigir!"
-                        onButtonPress={() => {
-                            navigation.navigate('Email');
-                        }}
-                    />
-                    <Button
                         title="Confirmar"
                         onButtonPress={() => {
-                            navigation.navigate('Password');
+                            navigation.navigate('Password', {
+                                ...route.params
+                            });
                         }}
                     />
                 </View>

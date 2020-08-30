@@ -17,9 +17,9 @@ export default function Welcome({ navigation }) {
                 <Media source={ShoppingCart} />
                 <View>
                     <Button
-                        title="Acessar o aplicativo"
+                        title="Login"
                         onButtonPress={() => {
-                            navigation.navigate('MainTabNavigator');
+                            navigation.navigate('Login');
                         }}
                     />
                     <Button

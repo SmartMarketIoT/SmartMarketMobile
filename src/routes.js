@@ -27,6 +27,7 @@ import ProductFinish from './Pages/NewProduct/productFinish'
 //outras
 import Profile from './Pages/Profile';
 import Login from './Pages/Login';
+import WaitingSensor from './Pages/WaitingSensor'
 
 export {
     Home,
@@ -53,5 +54,6 @@ export {
     Location,
     ProductFinish,
     Profile,
-    Login
+    Login,
+    WaitingSensor
 }

@@ -12,3 +12,7 @@ export const Description = styled.Text`
     margin-top: 3px;
     align-self: flex-end;
 `;
+
+export const InputError = styled(Description)`
+    color: ${colors.red};
+`;

@@ -24,7 +24,8 @@ import {
     ProductFinish, 
     SmsConfirmation,
     Password,
-    PasswordConfirm
+    PasswordConfirm,
+    WaitingSensor
 } from '../routes'
 
 
@@ -214,6 +215,14 @@ function Root() {
                 <Stack.Screen
                     name="PasswordConfirm"
                     component={PasswordConfirm}
+                    options={{ 
+                        headerShown: false,
+                        ...TransitionPresets.SlideFromRightIOS,
+                    }}
+                />
+                <Stack.Screen
+                    name="WaitingSensor"
+                    component={WaitingSensor}
                     options={{ 
                         headerShown: false,
                         ...TransitionPresets.SlideFromRightIOS,
