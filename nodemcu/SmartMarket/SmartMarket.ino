@@ -1,62 +1,73 @@
-/*
- * --------------------------------------------------------------------------------------------------------------------
- * Example sketch/program showing how to read new NUID from a PICC to serial.
- * --------------------------------------------------------------------------------------------------------------------
- * This is a MFRC522 library example; for further details and other examples see: https://github.com/miguelbalboa/rfid
- * 
- * Example sketch/program showing how to the read data from a PICC (that is: a RFID Tag or Card) using a MFRC522 based RFID
- * Reader on the Arduino SPI interface.
- * 
- * When the Arduino and the MFRC522 module are connected (see the pin layout below), load this sketch into Arduino IDE
- * then verify/compile and upload it. To see the output: use Tools, Serial Monitor of the IDE (hit Ctrl+Shft+M). When
- * you present a PICC (that is: a RFID Tag or Card) at reading distance of the MFRC522 Reader/PCD, the serial output
- * will show the type, and the NUID if a new card has been detected. Note: you may see "Timeout in communication" messages
- * when removing the PICC from reading distance too early.
- * 
- * @license Released into the public domain.
- * 
- * Typical pin layout used:
- * -----------------------------------------------------------------------------------------
- *             MFRC522      Arduino       Arduino   Arduino    Arduino          Arduino
- *             Reader/PCD   Uno/101       Mega      Nano v3    Leonardo/Micro   Pro Micro
- * Signal      Pin          Pin           Pin       Pin        Pin              Pin
- * -----------------------------------------------------------------------------------------
- * RST/Reset   RST          9             5         D9         RESET/ICSP-5     RST
- * SPI SS      SDA(SS)      10            53        D10        10               10
- * SPI MOSI    MOSI         11 / ICSP-4   51        D11        ICSP-4           16
- * SPI MISO    MISO         12 / ICSP-1   50        D12        ICSP-1           14
- * SPI SCK     SCK          13 / ICSP-3   52        D13        ICSP-3           15
- */
-
+// Import libs
 #include <SPI.h>
 #include <MFRC522.h>
+#include <ESP8266WiFi.h> 
+#include <ESP8266HTTPClient.h>
 
-#define SS_PIN 2
-#define RST_PIN 0
- 
+// NodeMcu port config
+#define SS_PIN 2 // D4 -> NodeMcu
+#define RST_PIN 0 // D3 -> NodeMcu
+
+// Network config
+const char* helixHttp = "<server-ip>:1026/v2";
+const char* helixMqqt = "<server-ip>:4041";
+
+// Device config
+const char* deviceId = "urn:ngsi-ld:sensor:001";
+
+// Wifi Config
+const char* ssid = "<wifi-name>"; 
+const char* password = "<wifi-password>";
+
+// Global variables
+bool readProducts = true; 
+char* purchaseId;
+byte nuidPICC[4]; // actual NUID 
+
+// RFID sensor config
 MFRC522 rfid(SS_PIN, RST_PIN); // Instance of the class
 
 MFRC522::MIFARE_Key key; 
 
-// Init array that will store new NUID 
-byte nuidPICC[4];
+WiFiClient espClient;
+HTTPClient http;
 
 void setup() { 
   Serial.begin(9600);
+  Serial.flush();
+  //RFID
   SPI.begin(); // Init SPI bus
   rfid.PCD_Init(); // Init MFRC522 
+
+  //Wi-Fi access
+  WiFi.begin(ssid, password);
 
   for (byte i = 0; i < 6; i++) {
     key.keyByte[i] = 0xFF;
   }
 
-  Serial.println(F("This code scan the MIFARE Classsic NUID."));
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.println("Connecting to WiFi..");
+  }
+
+  Serial.println("Connected WiFi network!");
+  delay(2000);
+  
+
+  Serial.println(F("RFID Connected!"));
   Serial.print(F("Using the following key:"));
   printHex(key.keyByte, MFRC522::MF_KEY_SIZE);
 }
  
 void loop() {
+  
+  if(readProducts){
+    readProduct();
+  }
+}
 
+void readProduct(){
   // Reset the loop if no new card present on the sensor/reader. This saves the entire process when idle.
   if ( ! rfid.PICC_IsNewCardPresent())
     return;
@@ -82,7 +93,10 @@ void loop() {
     rfid.uid.uidByte[2] != nuidPICC[2] || 
     rfid.uid.uidByte[3] != nuidPICC[3] ) {
     Serial.println(F("A new card has been detected."));
+    
+    putItemPurchase("urn:ngsi-ld:InventoryItem:003", "urn:ngsi-ld:Product:001", "urn:ngsi-ld:Purchase:001");
 
+    
     // Store NUID into nuidPICC array
     for (byte i = 0; i < 4; i++) {
       nuidPICC[i] = rfid.uid.uidByte[i];
@@ -93,7 +107,6 @@ void loop() {
     printHex(rfid.uid.uidByte, rfid.uid.size);
     Serial.println();
     Serial.print(F("In dec: "));
-    printDec(rfid.uid.uidByte, rfid.uid.size);
     Serial.println();
   }
   else Serial.println(F("Card read previously."));
@@ -105,7 +118,6 @@ void loop() {
   rfid.PCD_StopCrypto1();
 }
 
-
 /**
  * Helper routine to dump a byte array as hex values to Serial. 
  */
@@ -116,12 +128,54 @@ void printHex(byte *buffer, byte bufferSize) {
   }
 }
 
-/**
- * Helper routine to dump a byte array as dec values to Serial.
- */
-void printDec(byte *buffer, byte bufferSize) {
-  for (byte i = 0; i < bufferSize; i++) {
-    Serial.print(buffer[i] < 0x10 ? " 0" : " ");
-    Serial.print(buffer[i], DEC);
+void putItemPurchase(String entitieName, String productId, String purchaseId) {
+    String bodyRequest = "{\"id\": \"" + entitieName + "\", \"type\": \"InventoryItem\", \"refProduct\": { \"value\": \"" + productId + "\", \"type\": \"Relationship\"},\"refPurchase\": { \"value\": \"" + purchaseId + "\", \"type\": \"Relationship\"}}";
+    httpRequest("/entities", bodyRequest);
+}
+
+//request
+void httpRequest(String path, String data)
+{
+  String payload = makeRequest(path, data);
+
+  if (!payload) {
+    return;
   }
+
+  Serial.println("##[RESULT]## ==> " + payload);
+
+}
+
+//request
+String makeRequest(String path, String bodyRequest)
+{
+  String fullAddress = "http://" + String(helixHttp) + path;
+  http.begin(fullAddress);
+  Serial.println("Orion URI request: " + fullAddress);
+
+  http.addHeader("Content-Type", "application/json"); 
+  http.addHeader("Accept", "application/json"); 
+  http.addHeader("fiware-service", "helixiot"); 
+  http.addHeader("fiware-servicepath", "/"); 
+
+Serial.println(bodyRequest);
+  int httpCode = http.POST(bodyRequest);
+
+  String response =  http.getString();
+
+  Serial.println("HTTP CODE");
+  Serial.println(httpCode);
+  
+  if (httpCode < 0) {
+    Serial.println("request error - " + httpCode);
+    return "";
+  }
+
+  if (httpCode != HTTP_CODE_OK) {
+    return "";
+  }
+
+  http.end();
+
+  return response;
 }
