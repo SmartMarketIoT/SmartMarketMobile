@@ -1,12 +1,15 @@
 import React from 'react';
-import { CardContainer, CardTitle, CardPrice, CardId, CardPriceGreen } from './styles'
+import { CardContainer, CardTitle, CardPrice, CardId, CardPriceGreen, CardImage, CardContent } from './styles'
 
-const ProductCard = ({ Title, Price, Id}) => {
+const ProductCard = ({ Title, Price, Id, Uri}) => {
   return (
     <CardContainer>
-        <CardTitle>{Title}</CardTitle>
-        <CardPrice>Preço: <CardPriceGreen>R$ {Price}</CardPriceGreen></CardPrice>
-        <CardId>Id: {Id}</CardId>
+        <CardImage source={{uri: Uri}} />
+        <CardContent>
+            <CardTitle>{Title}</CardTitle>
+            <CardPrice>Preço: <CardPriceGreen>R$ {Price}</CardPriceGreen></CardPrice>
+            <CardId>Id: {Id}</CardId>
+        </CardContent>        
     </CardContainer>
   );
 }

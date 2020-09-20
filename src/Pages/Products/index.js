@@ -30,16 +30,18 @@ export default function Products({ navigation }) {
 
     return (
         <Container>
-            <ScrollView>
+            <ScrollView style={{display: "flex"}}>
                 <PageTitle text="Produtos"/>
             {   
                 products.map((product, key) => {
+                  {console.log(product)}
                    return (
                        <ProductCard
                             key={key}
                             Title={product.name.value}
                             Price={product.price.value}
                             Id={product.id}
+                            Uri={product.img.value}
                        />
                    )
                 }) 

@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
-import { Container, PurchaseCard, PageTitle, ContentContainer, Button } from '../../Components';
+import { Container, PurchaseCard, PageTitle, ContentContainer, Button, Media } from '../../Components';
 import HELIX_HTTP, { Entities } from '../../Services/Helix'
 import AsyncStorage from '@react-native-community/async-storage';
 import { ScrollView } from 'react-native';
-import { Media } from './styles';
-import NoAuth from '../../Assets/images/no-auth.png';
+import EmptyCart from '../../Assets/images/emptyCart.png';
 
 export default function Purchases({ navigation }) {
 
@@ -54,23 +53,28 @@ export default function Purchases({ navigation }) {
     return (
         <Container>
             { !loading ?
-                <ScrollView>
-                    <PageTitle text="Minhas compras"/>
-                    {   
-                        purchases.map((purchase, key) => {
-                            console.log(purchase)
-                            return (
-                                <PurchaseCard
-                                        key={key}
-                                        Price={purchase.itemsPrice.value}
-                                        Id={purchase.id}
-                                />
-                            )
-                        }) 
-                    }
-                </ScrollView> 
+                purchases.length > 0 ?
+                    <ScrollView>
+                        <PageTitle text="Minhas compras"/>
+                        {                               
+                            purchases.map((purchase, key) => {
+                                console.log(purchase)
+                                return (
+                                    <PurchaseCard
+                                            key={key}
+                                            Price={purchase.itemsPrice.value}
+                                            Id={purchase.id}
+                                    />
+                                )
+                            })                               
+                        }
+                    </ScrollView> :
+                    <ContentContainer>
+                        <PageTitle text="Você ainda não comprou nada!!!"/>
+                        <Media source={EmptyCart}/>
+                    </ContentContainer>
                 : null
-            }
+            }            
         </Container>
     );
 }

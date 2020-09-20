@@ -9,15 +9,15 @@
 #define RST_PIN 0 // D3 -> NodeMcu
 
 // Network config
-const char* helixHttp = "<server-ip>:1026/v2";
-const char* helixMqqt = "<server-ip>:4041";
+const char* helixHttp = "34.70.244.238:1026/v2";
+const char* helixMqqt = "34.70.244.238:4041";
 
 // Device config
 const char* deviceId = "urn:ngsi-ld:sensor:001";
 
 // Wifi Config
-const char* ssid = "<wifi-name>"; 
-const char* password = "<wifi-password>";
+const char* ssid = "GlobalNet_Matheus"; 
+const char* password = "6352414503";
 
 // Global variables
 bool readProducts = true; 
@@ -34,7 +34,10 @@ HTTPClient http;
 
 void setup() { 
   Serial.begin(9600);
-  Serial.flush();
+  Serial.write(12);
+  Serial.println("======================================================================================================");
+  Serial.println("                                       SmartMarket - Sensor RFID                                      ");
+  Serial.println("======================================================================================================");
   //RFID
   SPI.begin(); // Init SPI bus
   rfid.PCD_Init(); // Init MFRC522 
@@ -48,15 +51,15 @@ void setup() {
 
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
-    Serial.println("Connecting to WiFi..");
+    Serial.println("Conectando ao Wifi...");
   }
 
-  Serial.println("Connected WiFi network!");
+  Serial.println("Wifi conectado com sucesso!!!");
   delay(2000);
   
 
-  Serial.println(F("RFID Connected!"));
-  Serial.print(F("Using the following key:"));
+  Serial.println(F("RFID Conectado!"));
+  Serial.print(F("Utilizando a chave:"));
   printHex(key.keyByte, MFRC522::MF_KEY_SIZE);
 }
  
@@ -68,6 +71,7 @@ void loop() {
 }
 
 void readProduct(){
+  delay(1000);
   // Reset the loop if no new card present on the sensor/reader. This saves the entire process when idle.
   if ( ! rfid.PICC_IsNewCardPresent())
     return;
@@ -75,16 +79,14 @@ void readProduct(){
   // Verify if the NUID has been readed
   if ( ! rfid.PICC_ReadCardSerial())
     return;
-
-  Serial.print(F("PICC type: "));
+    
   MFRC522::PICC_Type piccType = rfid.PICC_GetType(rfid.uid.sak);
-  Serial.println(rfid.PICC_GetTypeName(piccType));
-
+  
   // Check is the PICC of Classic MIFARE type
   if (piccType != MFRC522::PICC_TYPE_MIFARE_MINI &&  
     piccType != MFRC522::PICC_TYPE_MIFARE_1K &&
     piccType != MFRC522::PICC_TYPE_MIFARE_4K) {
-    Serial.println(F("Your tag is not of type MIFARE Classic."));
+    Serial.println(F("Tag RFID nao compativel com o sensor!!! "));
     return;
   }
 
@@ -92,7 +94,7 @@ void readProduct(){
     rfid.uid.uidByte[1] != nuidPICC[1] || 
     rfid.uid.uidByte[2] != nuidPICC[2] || 
     rfid.uid.uidByte[3] != nuidPICC[3] ) {
-    Serial.println(F("A new card has been detected."));
+    Serial.println(F("Novo produto detectado!"));
     
     putItemPurchase("urn:ngsi-ld:InventoryItem:003", "urn:ngsi-ld:Product:001", "urn:ngsi-ld:Purchase:001");
 
@@ -102,14 +104,14 @@ void readProduct(){
       nuidPICC[i] = rfid.uid.uidByte[i];
     }
    
-    Serial.println(F("The NUID tag is:"));
-    Serial.print(F("In hex: "));
+    //Serial.println(F("The NUID tag is:"));
+    //Serial.print(F("In hex: "));
     printHex(rfid.uid.uidByte, rfid.uid.size);
-    Serial.println();
-    Serial.print(F("In dec: "));
-    Serial.println();
+    //Serial.println();
+    //Serial.print(F("In dec: "));
+    //Serial.println();
   }
-  else Serial.println(F("Card read previously."));
+  else Serial.println(F("Produto já foi lido!"));
 
   // Halt PICC
   rfid.PICC_HaltA();

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import HELIX_HTTP, { GetNextProduct, CreateOrUPdate } from '../../Services/Helix'
+import HELIX_HTTP, { GetNextProduct, CreateOrUPdate, GetNextClient } from '../../Services/Helix'
 import AsyncStorage from '@react-native-community/async-storage';
 import { View } from 'react-native';
 import {
@@ -20,7 +20,7 @@ export default function PasswordConfirm({ navigation, route }) {
 
     async function onNext() {
 
-        const nextId = await GetNextProduct._55;
+        const nextId = await GetNextClient._55;
 
         if (pwdConfirm != route.params.pwd) {
             setPwdConfirmError("Senha diferente da anterior")

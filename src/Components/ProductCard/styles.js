@@ -7,15 +7,27 @@ export const CardContainer = styled.View`
     border-radius: 15px;
     margin: 10px;
     padding: 10px;
+    flex-direction: row;
+`;
+
+export const CardContent = styled.View`
+    padding: 10px;
+    width: 90%;
+`;
+
+export const CardImage = styled.Image`
+    height: 100px;
+    width: 100px;
 `;
 
 export const CardTitle = styled.Text`
     font-weight: bold;
+    width: 80%;
 `;
 
 
 export const CardPrice = styled.Text`
-
+    width: 80%; 
 `;
 
 export const CardPriceGreen = styled(CardPrice)`
@@ -25,4 +37,5 @@ export const CardPriceGreen = styled(CardPrice)`
 
 export const CardId = styled.Text`
     color: ${colors.secondary}
+    width: 80%;
 `;

@@ -8,6 +8,7 @@ const HttpConfig = {
     Port: '1026'
 }
 
+
 const HELIX_HTTP = axios.create({
     /* baseURL: `${HttpConfig.Protocol}:/${HttpConfig.Url}/:${HttpConfig.Port}`, */
     baseURL: 'http://34.70.244.238:1026',
@@ -15,6 +16,7 @@ const HELIX_HTTP = axios.create({
         'Content-Type':'application/json'
     }
 })
+
 
 const CreateOrUPdate = '/v2/op/update'
 const Entities = '/v2/entities'
@@ -40,8 +42,12 @@ async function GetNextId(type) {
     
 }
 
+
+
 const GetNextProduct = GetNextId("Product");
+const GetNextClient = GetNextId("Client")
+const GetNextPurchase = GetNextId("Purchase")
 
 export default HELIX_HTTP
 
-export { HttpConfig, CreateOrUPdate, Entities, GetNextProduct }
+export { HttpConfig, CreateOrUPdate, Entities, GetNextProduct, GetNextClient, GetNextPurchase }

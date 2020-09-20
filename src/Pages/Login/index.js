@@ -10,7 +10,7 @@ import {
     BackButton, 
 } from '../../Components';
 import { Media } from './styles';
-import LastOnline from '../../Assets/images/lastOnline.png';
+import Logo from '../../Assets/images/logo.png';
 import HELIX_HTTP, { Entities } from '../../Services/Helix'
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -61,7 +61,7 @@ export default function Login({ navigation }) {
                         navigation.goBack();
                     }}
                 />
-                <Media source={LastOnline} />
+                <Media source={Logo} />
                 <View>
                     <InputLabel text="E-mail:" />
                     <TextInput value={email} onChangeText={(val) => setEmail(val)} error={emailError}/>
